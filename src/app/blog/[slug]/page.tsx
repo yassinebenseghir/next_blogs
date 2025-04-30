@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { blogs } from '../../../lib/blog';
+import { fetchBlogs } from '../../../lib/blog';
 
 type BlogParams = {
   params: {
@@ -7,17 +7,18 @@ type BlogParams = {
   };
 };
 
-export default function BlogDetail({ params }: BlogParams) {
+export default async function BlogDetail({ params }: BlogParams) {
+  const blogs = await fetchBlogs();
   const blog = blogs.find((b) => b.slug === params.slug);
 
   if (!blog) {
-    return notFound(); // affiche une page 404 si l'article n'existe pas
+    notFound();
   }
 
   return (
     <div className="max-w-3xl mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
-      <p className="text-gray-400 text-sm mb-6">Publié le {blog.date}</p>
+      <p className="text-gray-400 text-sm mb-6">Publié le {new Date(blog.created_at).toLocaleDateString()}</p>
       <img src={blog.image} alt={blog.title} className="w-full h-64 object-cover rounded-md mb-6" />
       <div className="prose prose-lg">
         <p>{blog.content}</p>

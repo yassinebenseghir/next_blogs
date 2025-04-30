@@ -1,31 +1,31 @@
-import Link from 'next/link';
+// src/components/BlogCard.tsx
+import React from 'react'
+import Link from 'next/link'
 
-type Blog = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  slug: string;
-  date: string;
-};
+type BlogCardProps = {
+  blog: {
+    id: number
+    title: string
+    description: string
+    image_url: string
+    slug: string
+    created_at: string
+  }
+}
 
-export default function BlogCard({ blog }: { blog: Blog }) {
+const BlogCard = ({ blog }: BlogCardProps) => {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-      <img src={blog.image} alt={blog.title} className="w-full h-48 object-cover" />
-      
+    <div className="border rounded-xl overflow-hidden shadow-md">
+      <img src={blog.image_url} alt={blog.title} className="w-full h-48 object-cover" />
       <div className="p-4">
-        <h2 className="text-xl font-semibold mb-2">{blog.title}</h2>
-        <p className="text-gray-600 text-sm mb-4">{blog.description}</p>
-        <p className="text-xs text-gray-400 mb-4">Publié le {blog.date}</p>
-        
-        <Link 
-          href={`/blog/${blog.slug}`} 
-          className="inline-block text-blue-600 hover:underline text-sm font-medium"
-        >
-          Lire la suite →
+        <h2 className="text-xl font-semibold">{blog.title}</h2>
+        <p className="text-gray-600">{blog.description}</p>
+        <Link href={`/blog/${blog.slug}`}>
+          <span className="text-blue-500 hover:underline mt-2 block">Read more</span>
         </Link>
       </div>
     </div>
-  );
+  )
 }
+
+export default BlogCard
